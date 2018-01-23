@@ -206,6 +206,7 @@ if(backMenu==true) { //se true fa comparire il menu per tornare indietro
   text('accuracy: ' + accuracy, 5, 30 * 4);
   text('Aggiornamenti: ' + numeroAgg, 5, 30 * 5);
   text('Distanza Precedente: ' + metriPrec, 5, 30 * 6);
+  text('conv: ' + conv, 5, 30 * 7);  
   pop();
   // console.log('infoOn: '+infoOn);
   // console.log('infoButtonShow: '+infoButtonShow);
