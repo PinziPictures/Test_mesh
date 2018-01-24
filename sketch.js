@@ -937,6 +937,7 @@ if(hit_yes==true) {
   metriTOT=0;
   scelto=-1;
   backUpPositionDist=[];
+  mask.clear();
   check_scal=false;
   if(sequoiaDemoOn==false && burjDemoOn==false) {
     setTimeout(function() {
@@ -1123,9 +1124,11 @@ function showLocation(position) {
           conv = map(metriTOT, 0, myData.landmarks_en[scelto].height, 0, 1000); //converte la distanza in m in pixel di scalata
           //conv=100;
           
-          //mask.clear();
+          
 
-          ( imgClone = imgLink[scelto].get() ).mask( mask.get() ); //imposta la maschera appena creata al immagine imgClone
+          ( imgClone = imgLink[scelto].get() ).mask( mask.get() ); 
+           
+           //imposta la maschera appena creata al immagine imgClone
 
 
        }
