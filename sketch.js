@@ -937,12 +937,12 @@ if(hit_yes==true) {
   metriTOT=0;
   
   backUpPositionDist=[];
-  //mask.rect(0, 1280, 720, 1280);
-  //( imgClone = imgLink[scelto].get() ).mask( mask.get() );
+  mask.rect(0, 1280, 720, 1280);
+  ( imgClone = imgLink[scelto].get() ).mask( mask.get() );
   //imgClone = createGraphics(720, 1280);
   scelto=-1;
-  mask.clear();
-  imgClone.clear();
+  //mask.clear();
+  //imgClone.clear();
   conv=0;
   check_scal=false;
   
