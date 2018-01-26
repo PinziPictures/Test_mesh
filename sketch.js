@@ -984,9 +984,8 @@ if(hit_yes==true) {
   //imgClone = createGraphics(720, 1280);
   scelto=-1;
   conv=0;
-  mask.clear();
+  mask.rect(0, 1280-conv, 720, 1280);
   ( imgClone = imgLink[scelto].get() ).mask( mask.get() );
-  conv=0;
   check_scal=false;
 
   if(sequoiaDemoOn==false && burjDemoOn==false) {
