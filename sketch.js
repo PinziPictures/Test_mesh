@@ -1142,6 +1142,8 @@ function showLocation(position) {
        }
        if(metriTOT>=myData.landmarks_en[scelto].height){
            metriTOT=myData.landmarks_en[scelto].height;
+           conv=myData.landmarks_en[scelto].hPx;
+           ( imgClone = imgLink[scelto].get() ).mask( mask.get() );
        }
     }
   }
