@@ -70,7 +70,7 @@ var latitude,
     stabilizzato = false, //inizia con la propriteà non stabilizzata
     backUpstabilizzation = [], //crea la array dei valori per stabilizzare
     stabilizzationTOT = 0,
-    accuracyLimit = 0.2, //valore in metri che deve avere la sommatoria della array precedente per essere considerata accettabile
+    accuracyLimit = 0.4, //valore in metri che deve avere la sommatoria della array precedente per essere considerata accettabile
     maxStabilizzationArray = 4, //massimo numero di valori che l'array di sopra può tenere (maggiore è più preciso è)
 
     conv=0, //conversione da m in pixel di scalata
@@ -193,7 +193,7 @@ function draw() {
 
   for (var i=0; i < myData.landmarks_en.length; i++){
       if(hit_struct[i]==true){
-          check_scal=true;
+          
           radarOn=false;
           console.log("cliccato "+i);
           push();
@@ -414,7 +414,7 @@ var f=300;
 function climbMode(structNum,cloudBool,cloudX,cloudY,cloudMin,cloudMax) { //structNum,cloudBool,cloudX,cloudY,cloudMin,cloudMax
   radarOn=false;
   climbOn=true;
-
+  check_scal=true;
 
 
   if(f>1800){f=1800} else{f+=50;}
