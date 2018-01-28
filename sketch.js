@@ -30,9 +30,10 @@ var myData, //segnaposto JSON
     posXPointer, //posizione centro radar
     posYPointer, //posizione centro radar
 
-    zoom = 1024; //var zoom
-    limSupZoom = 2048;
-    limInfZoom = 524288;
+    zoom = 13564; //var zoom inizilae
+    limSupZoom = 1364;
+    limInfZoom = 131072;
+    zoomIncrement = 1.02;
 
     distCliccable = 50; //distanza dalla cui si può selezionare (in metri)
 
@@ -69,7 +70,7 @@ var latitude,
     stabilizzato = false, //inizia con la propriteà non stabilizzata
     backUpstabilizzation = [], //crea la array dei valori per stabilizzare
     stabilizzationTOT = 0,
-    accuracyLimit = 0.4, //valore in metri che deve avere la sommatoria della array precedente per essere considerata accettabile
+    accuracyLimit = 0.2, //valore in metri che deve avere la sommatoria della array precedente per essere considerata accettabile
     maxStabilizzationArray = 4, //massimo numero di valori che l'array di sopra può tenere (maggiore è più preciso è)
 
     conv=0, //conversione da m in pixel di scalata
@@ -97,6 +98,7 @@ function preload() { //tutti i preload delle immagini e i font
   SU_logo = loadImage('./assets/SU_logo.png');
   camminaIco = loadImage('./assets/camminaIco.png');
   drittoIco = loadImage('./assets/drittoIco.png');
+  nuclearTriad = loadImage('./assets/nuclearTriad.png');
 
   myData = loadJSON('./assets/heights.json');
 
@@ -137,10 +139,20 @@ function setup() { //tutti i default dell'interfaccia
   }
 
 function draw() {
-
   if(mouseIsPressed==false) {mouseX=-100; mouseY=-100;}
 
   translate(width/2,height/2);
+
+  if(windowWidth>windowHeight){
+    background(colorList[0]);
+    textSize(16);
+    fill(25);
+    text("This site is intended to be viewed on a smartphone in portrait mode",0,height/2.4,width-210,height/3);
+    imageMode(CENTER);
+    scale(0.45);
+    image(SU_logo,0,-height/4.5);
+  }
+  else{
   background(colorList[0]);
   // instructions();
   // infoOn=true;
@@ -210,9 +222,12 @@ if(backMenu==true) { //se true fa comparire il menu per tornare indietro
   pop();
   // console.log('infoOn: '+infoOn);
   // console.log('infoButtonShow: '+infoButtonShow);
+  }
 } //draw END
 
 function titleScreen() {
+  if(eng==true) {var creditText = "credits";}
+  if(ita==true) {var creditText = "crediti";}
   titleScreenOn = true; //ogni schermata mette se stessa come true e le altre come false
   climbOn=false;
   c+=0.1;
@@ -237,6 +252,35 @@ function titleScreen() {
   demoButton('demo');
   flag_ita(faded_it);
   flag_eng(faded_en);
+
+  push();
+  var hit_cred = false;
+  textAlign(LEFT);
+  fill(79,86,106);
+  textSize(12);
+  text(creditText,-width/2.3,height/2.1);
+  // stroke(79,86,106);
+  // strokeWeight(1);
+  // line(-width/2.3,height/2.08,-width/3,height/2.08);
+  // noFill();
+  // stroke(255);
+  // strokeWeight(1);
+  // rectMode(CORNER);
+  // rect(-width/2.1,height/2.25,65,30);
+  hit_cred = collidePointRect(mouseX-width/2,mouseY-height/2,-width/2.1,height/2.25,65,30);
+  if(hit_cred==true) {
+    push();
+    background(245);
+    imageMode(CENTER);
+    push();
+    textAlign(CENTER);
+    text("We'll hack your location and then we'll nuke your home.",0,height/2.4,width-50,height/3);
+    pop();
+    scale(0.7);
+    image(nuclearTriad,0,-height/10);
+    pop();
+  }
+  pop();
 
   pop();
 }
@@ -301,7 +345,7 @@ function demoTitles(){
   backArrow();
 
   textSize(52);
-  fill(45,45,45,45);
+  fill(89,210,220,150);
   text('demo',0+2,-height/3.2+2);
   fill(colorList[3]);
   text('demo',0,-height/3.2);
@@ -367,7 +411,6 @@ function demoTitles(){
   pop();
 }
 var f=300;
-var completedAnim=false;
 function climbMode(structNum,cloudBool,cloudX,cloudY,cloudMin,cloudMax) { //structNum,cloudBool,cloudX,cloudY,cloudMin,cloudMax
   radarOn=false;
   climbOn=true;
@@ -381,19 +424,10 @@ function climbMode(structNum,cloudBool,cloudX,cloudY,cloudMin,cloudMax) { //stru
     climbStructure(structNum,cloudBool,cloudX,cloudY,cloudMin,cloudMax);
     climbInterface(structNum);
     backArrow();
-    if(metriTOT>=heightLink[structNum]){
-        check_scal=false;
-        completedAnim=true;
-        if (completedAnim==true) {
-          completed();
-        }
-    }
+    
       if(infoOn==true) { //se true fa comparire la schermata con le informazioni sulla struttura
         setTimeout(infoScreen(structNum),400);
         if(infoButtonShow==true){infoButton()};
-        completedAnim=false;
-        movY=0;
-        movSwitcher=false;
       }
   };
   push();
@@ -420,7 +454,6 @@ function climbInterface(structNum) {
 }
 var cloudSwitch=false;
 function climbStructure(structNum,cloudBool,cloudX,cloudY,cloudMin,cloudMax) {
-
   push();
   imageMode(CENTER);
 
@@ -474,7 +507,6 @@ var movSwitcher=false;
 function completed() {
   push();
   var txtCompleted;
-  var timeCompleted='30 sec';
   if(movSwitcher==false) {
     if(movY<80){movY+=2};
     if(movY>=80){movY=80; movSwitcher=true;};
@@ -486,7 +518,7 @@ function completed() {
         infoOn=true;
       };
     }
-  // console.log(movY);
+  console.log(movY);
   if(eng==true) {txtCompleted="completed!"}
   if(ita==true) {txtCompleted="completata!"}
   textSize(46);
@@ -503,13 +535,6 @@ function completed() {
   text(txtCompleted,0+2,height/movY+2);
   fill(colorList[3]);
   text(txtCompleted,0,height/movY);
-  // push();
-  // textSize(12);
-  // fill(45,45,45,45);
-  // text('in '+timeCompleted,0+1,height/movY+31);
-  // fill(85,85,85);
-  // text('in '+timeCompleted,0,height/movY+30);
-  // pop();
   pop();
   pop();
 }
@@ -707,6 +732,7 @@ function radar() {
   climbOn=false;
   zoomButtons();
   radarQuadrant();
+  nButton();
   var locationTitle;
   var locationTxt;
   var signalTitle;
@@ -719,13 +745,13 @@ function radar() {
   noFill();
   strokeWeight(3);
   stroke(104,222,232,45);
-  ellipse(width/2.35-7,-height/2.2+57+1,2+accuracyCircle);
+  ellipse(width/2.35-7,-height/2.16+57+1,2+accuracyCircle);
   stroke(accuracyCircleCol);
-  ellipse(width/2.35-8,-height/2.2+57,2+accuracyCircle);
+  ellipse(width/2.35-8,-height/2.16+57,2+accuracyCircle);
   fill(79,86,106);
   noStroke();
-  textSize(12);
-  text(signalTitle,width/2.35-23,-height/2.2+60);
+  textSize(10);
+  text(signalTitle,width/2.35-23,-height/2.16+60);
   pop();
 
   fill(72,130,130);
@@ -742,6 +768,10 @@ function radar() {
   // infoPoint(50,10);
   pop();
   rot+=0.01;
+
+  if (nordIsUp==true) {pointerIcon(heading);}  //rotation, parametro da collegare all'heading se decidiamo di far muovere il puntatore e non il radar
+  else {pointerIcon(0);};
+
   drawIconOnRadar()
   pointerIcon(heading); //rotation, parametro da collegare all'heading se decidiamo di far muovere il puntatore e non il radar
 
@@ -792,13 +822,38 @@ function radar() {
     pop();
   }
 
+  function nButton() {
+    var hit_nButton=false;
+    push();
+    fill(45,45,45,45);
+    ellipse(-width/2.3+1,height/2.3+1,30);
+    fill(colorList[1]);
+    ellipse(-width/2.3,height/2.3,30);
+    textAlign(CENTER);
+    fill(120,120,120);
+    if(nordIsUp==true) {fill(69,190,200);}
+    textFont(ubuntuBold);
+    textSize(12);
+    triangle(-width/2.3-3,height/2.33,-width/2.3+3,height/2.33,-width/2.3,height/2.33-5);
+    text("N",-width/2.3,height/2.22);
+    hit_nButton=collidePointCircle(mouseX-width/2,mouseY-height/2,-width/2.2,height/2.3,30);
+    if(hit_nButton==true) {
+      // setTimeout(function(){
+        nordIsUp=!nordIsUp;
+        if(mouseIsPressed==true) {mouseX=-100; mouseY=-100;}
+      // },5);
+    }
+    console.log(nordIsUp);
+    pop();
+  }
+
   function pointerIcon(rotation) { //funzione che disegna il puntatore
     push();
     fill(63,169,245);
     ellipse(0,height/11,20,20);
     translate(0,height/11);
 
-    rotate(rotation);
+    rotate(rotation-180);
     // rect(0,height/45,20,20);
     triangle(-9.5,height/123,9.5,height/123,0,height/123+16);
     pop();
@@ -977,6 +1032,9 @@ rectMode(CORNER);
 hit_yes = collidePointRect(mouseX-width/2,mouseY-height/2,-width/3.7,-height/11,width/4.7,height/10);
 if(hit_yes==true) {
   metriTOT=0;
+  movY=0;
+  movSwitcher=false;
+  infoOn=false;
 
   backUpPositionDist=[];
   conv=0;
@@ -991,7 +1049,6 @@ if(hit_yes==true) {
     titleScreenOn=false;
     demoTitlesOn=false;
     infoOn=false;
-    infoOpen=false;
     backMenu=false;
     radarOn=true;
 
@@ -1028,44 +1085,58 @@ function windowResized() {resizeCanvas(innerWidth,innerHeight)} //ridimensionato
 function drawIconOnRadar() {
   var circle = (70+width/1-r),
       posXPointer = 0;
-      posYPointer = height/11;
+      posYPointer = height/11,
 
   push()
+
     imageMode(CENTER)
     translate(posXPointer,posYPointer)
     for (var i=0; i < myData.landmarks_en.length; i++) { //Disegna tutte le icone
+
+      var wImg = 40,
+          hImg = 80,
+          wElli = 65,
+          hElli = 15,
+
+          distCoord = dist(0,0, posRelMe[i].Lon, posRelMe[i].Lat)
+
+          xOut = (circle/2)*cos(posRelMe[i].Ang-90),
+          yOut = (circle/2)*sin(posRelMe[i].Ang-90)-(hImg/2),
+          xIn = (distCoord*zoom)*cos(posRelMe[i].Ang-90),
+          yIn = (distCoord*zoom)*sin(posRelMe[i].Ang-90)-(hImg/2);
+
 
       hit_struct[i] = false;
 
       if (dist(0,0,(posRelMe[i].Lon)*zoom,(posRelMe[i].Lat)*zoom*(-1))>(circle/2)) {  //Se l'icona è fuori dal radar
         if (myData.landmarks_en[i].visit==false) {
           fill(45,45,95,70);
-          ellipse((circle/2)*cos(posRelMe[i].Ang-90),(circle/2)*sin(posRelMe[i].Ang-90),65,15);
-          image(imgLinkGray[i], (circle/2)*cos(posRelMe[i].Ang-90), (circle/2)*sin(posRelMe[i].Ang-90)-40,40,80);
+          ellipse(xOut, yOut+(hImg/2), wElli, hElli);
+          image(imgLinkGray[i], xOut, yOut , wImg, hImg);
         } //Se l'icona non è stat visitata
         else {
           fill(45,45,95,70);
-          ellipse((circle/2)*cos(posRelMe[i].Ang-90),(circle/2)*sin(posRelMe[i].Ang-90),65,15);
-          image(imgLinkColore[i], (circle/2)*cos(posRelMe[i].Ang-90), (circle/2)*sin(posRelMe[i].Ang-90)-40,40,80);
+          ellipse(xOut, yOut+(hImg/2), wElli, hElli);
+          image(imgLinkColore[i], xOut, yOut , wImg, hImg);
         } //Se l'icona è stat visitata
       }
 
       else if (posRelMe[i].dist<distCliccable) {
         fill(244,128,33,210);
-        ellipse((posRelMe[i].Lon)*zoom,((posRelMe[i].Lat)*zoom*(-1)),65,15);
-        image(imgLinkColore[i], (posRelMe[i].Lon)*zoom,((posRelMe[i].Lat)*zoom*(-1))-40,40,80);
+        ellipse(xIn, yIn+(hImg/2), wElli, hElli);
+        image(imgLinkGray[i], xIn, yIn , wImg, hImg);
       } //Se l'icona si trova nelle vicinanze
 
       else {  //Se l'icona è dentro il radar
         if (myData.landmarks_en[i].visit==false) {
           fill(45,45,95,70);
-          ellipse((posRelMe[i].Lon)*zoom,(posRelMe[i].Lat)*zoom*(-1),65,15);
-          image(imgLinkGray[i], (posRelMe[i].Lon)*zoom,(posRelMe[i].Lat)*zoom*(-1)-40,40,80);
+          ellipse(xIn, yIn+(hImg/2), wElli, hElli);
+          image(imgLinkGray[i], xIn, yIn, wImg, hImg);
         } //Se l'icona non è stat visitata
-        else {
+      else {
           fill(45,45,95,70);
-          ellipse((posRelMe[i].Lon)*zoom,(posRelMe[i].Lat)*zoom*(-1),65,15);
-          image(imgLinkColore[i], (posRelMe[i].Lon)*zoom,(posRelMe[i].Lat)*zoom*(-1)-40,40,80);
+          ellipse(xIn, yIn+(hImg/2), wElli, hElli);
+          image(imgLinkColore[i], xIn, yIn, wImg, hImg);
         } //Se l'icona è stat visitata
     }
     push();
@@ -1122,11 +1193,11 @@ function keyTyped() {
 }
 
 function zoomIn() {
-  if (zoom<limInfZoom) {zoom*=2; /*console.log(zoom)*/}
+  if (zoom<limInfZoom) {zoom*=zoomIncrement; /*console.log(zoom)*/}
   else {console.log("Limite zoom In raggiunto")}
 }
 function zoomOut() {
-  if (zoom>limSupZoom) {zoom/=2; /*console.log(zoom)*/}
+  if (zoom>limSupZoom) {zoom/=zoomIncrement; /*console.log(zoom)*/}
   else {console.log("Limite zoom Out raggiunto")}
 }
 
@@ -1135,11 +1206,11 @@ function zoomOut() {
 
 function stabilizzation() {
   if (stabilizzato==false) { //Stabilizzazione
-    if (isNaN(accuracy)==false) {backUpstabilizzation.push(accuracy);} //se la distanza è un valore numerico mettila nell Array della stabilizzazione
+    if (isNaN(metriPrec)==false) {backUpstabilizzation.push(metriPrec);} //se la distanza è un valore numerico mettila nell Array della stabilizzazione
     if (backUpstabilizzation.length>maxStabilizzationArray) {backUpstabilizzation.shift()}
-    if ((backUpstabilizzation.length==4)&&(stabilizzationTOT<accuracyLimit)) {stabilizzato=true; console.log("stabilizzato");}; //se la sommatoria delle
+    if ((backUpstabilizzation.length==4)&&(stabilizzationTOT<accuracyLimit)) {stabilizzato=true; console.log("stabilizzato")}; //se la sommatoria delle
 
-    stabilizzationTOT = (backUpstabilizzation.sum()/backUpstabilizzation.length)-accuracy;
+    stabilizzationTOT = backUpstabilizzation.sum();
   }
 }
 
@@ -1160,6 +1231,7 @@ function showLocation(position) {
     metriPrec = Math.round(metriPrec*100)/100 //arrotonda la distanza precedente
 
     stabilizzation() //Stabilizzazione
+
     if(climbOn==true){
 
         console.log(conv);
@@ -1179,10 +1251,13 @@ function showLocation(position) {
 
 
        }
-       if(metriTOT>=myData.landmarks_en[scelto].height){
+       if(metriTOT>=myData.landmarks_en[scelto].height && check_scal==true;){
            metriTOT=myData.landmarks_en[scelto].height;
            conv=myData.landmarks_en[scelto].hPx;
            ( imgClone = imgLink[scelto].get() ).mask( mask.get() );
+           check_scal=false;
+           completed();
+           
        }
     }
   }
