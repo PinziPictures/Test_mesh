@@ -1251,7 +1251,7 @@ function showLocation(position) {
 
 
        }
-       if(metriTOT>=myData.landmarks_en[scelto].height && check_scal==true;){
+       if(metriTOT>=myData.landmarks_en[scelto].height && check_scal==true){
            metriTOT=myData.landmarks_en[scelto].height;
            conv=myData.landmarks_en[scelto].hPx;
            ( imgClone = imgLink[scelto].get() ).mask( mask.get() );
