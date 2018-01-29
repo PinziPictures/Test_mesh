@@ -26,7 +26,7 @@ var myData, //segnaposto JSON
     myLat= 45.504996, //mia posizione Lat (Se si vuole mettere una fittizia, aggiungerla qui e disattivare getLocationUpdate() nel setup()) [Esempio: 45.504996]
     myLon=  9.166526, //mia posizione Lon (Se si vuole mettere una fittizia, aggiungerla qui e disattivare getLocationUpdate() nel setup()) [Esempio: 9.166526]
     heading, //mia direzione
-
+    heading_tot=0, //direzione salvata in caso di Nan
     posXPointer, //posizione centro radar
     posYPointer, //posizione centro radar
 
@@ -775,7 +775,7 @@ function radar() {
   else {pointerIcon(0);};
 
   drawIconOnRadar()
-  pointerIcon(heading); //rotation, parametro da collegare all'heading se decidiamo di far muovere il puntatore e non il radar
+  pointerIcon(heading_tot); //rotation, parametro da collegare all'heading se decidiamo di far muovere il puntatore e non il radar
 
   function zoomButtons() {
     push();
@@ -1223,7 +1223,9 @@ function showLocation(position) {
     longitude = position.coords.longitude; //prendi la longitudine dell'utente
     accuracy = position.coords.accuracy; //prendi l'accuratezza della precisione dell'utente
     heading = position.coords.heading; //prendi la direzione rispetto al nord dell'utente
-
+    if(isNaN(heading)==false){
+        heading_tot=heading;
+    }
     numeroAgg++
 
     backUpPositionLat.push(latitude); //aggiungi la latitudine alla Array di backup delle latitudini
