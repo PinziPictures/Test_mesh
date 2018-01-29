@@ -70,7 +70,7 @@ var latitude,
     stabilizzato = false, //inizia con la propriteà non stabilizzata
     backUpstabilizzation = [], //crea la array dei valori per stabilizzare
     stabilizzationTOT = 0,
-    accuracyLimit = 0.2, //valore in metri che deve avere la sommatoria della array precedente per essere considerata accettabile
+    accuracyLimit = 0.4, //valore in metri che deve avere la sommatoria della array precedente per essere considerata accettabile
     maxStabilizzationArray = 4, //massimo numero di valori che l'array di sopra può tenere (maggiore è più preciso è)
 
     conv=0, //conversione da m in pixel di scalata
@@ -771,7 +771,7 @@ function radar() {
   pop();
   rot+=0.01;
 
-  if (nordIsUp==true) {pointerIcon(heading);}  //rotation, parametro da collegare all'heading se decidiamo di far muovere il puntatore e non il radar
+  if (nordIsUp==true) {pointerIcon(heading_tot);}  //rotation, parametro da collegare all'heading se decidiamo di far muovere il puntatore e non il radar
   else {pointerIcon(0);};
 
   drawIconOnRadar()
@@ -1035,6 +1035,7 @@ hit_yes = collidePointRect(mouseX-width/2,mouseY-height/2,-width/3.7,-height/11,
 if(hit_yes==true) {
   metriTOT=0;
   movY=0;
+  metriPrec=0;
   movSwitcher=false;
   infoOn=false;
 
