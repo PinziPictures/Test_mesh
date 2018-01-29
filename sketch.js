@@ -425,7 +425,7 @@ function climbMode(structNum,cloudBool,cloudX,cloudY,cloudMin,cloudMax) { //stru
     climbStructure(structNum,cloudBool,cloudX,cloudY,cloudMin,cloudMax);
     climbInterface(structNum);
     backArrow();
-    if(metriTOT>=heightLink[structNum]){
+    if(metriTOT==heightLink[structNum]){
         completed();
     }
       if(infoOn==true) { //se true fa comparire la schermata con le informazioni sulla struttura
