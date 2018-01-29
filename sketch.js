@@ -1225,7 +1225,7 @@ function showLocation(position) {
     longitude = position.coords.longitude; //prendi la longitudine dell'utente
     accuracy = position.coords.accuracy; //prendi l'accuratezza della precisione dell'utente
     heading = position.coords.heading; //prendi la direzione rispetto al nord dell'utente
-    if(heading!=0){
+    if(heading!=null){
         heading_tot=heading;
     }
     numeroAgg++
@@ -1240,6 +1240,9 @@ function showLocation(position) {
     
     if(stabilizzato==false){
         stabilizzation() //Stabilizzazione
+    }
+    if(climbOn==false){
+        metriPrec=0;    
     }
     if(climbOn==true){
 
@@ -1267,6 +1270,7 @@ function showLocation(position) {
            ( imgClone = imgLink[scelto].get() ).mask( mask.get() );
            check_scal=false;
        }
+       
     }
   }
 
