@@ -1228,12 +1228,15 @@ function showLocation(position) {
 
     backUpPositionLat.push(latitude); //aggiungi la latitudine alla Array di backup delle latitudini
     backUpPositionLon.push(longitude); //aggiungi la longitudine alla Array di backup delle longitudini
-
-    metriPrec = measure(backUpPositionLat[numeroAgg],backUpPositionLon[numeroAgg],backUpPositionLat[numeroAgg-1],backUpPositionLon[numeroAgg-1]) //calcola la distanza tra la posizione precedente è quella attuale
-    metriPrec = Math.round(metriPrec*100)/100 //arrotonda la distanza precedente
-
-    stabilizzation() //Stabilizzazione
-
+    
+    if(stabilizzato==false || climbOn==true){
+        metriPrec = measure(backUpPositionLat[numeroAgg],backUpPositionLon[numeroAgg],backUpPositionLat[numeroAgg-1],backUpPositionLon[numeroAgg-1]) //calcola la distanza tra la posizione precedente è quella attuale
+        metriPrec = Math.round(metriPrec*100)/100 //arrotonda la distanza precedente
+    }
+    
+    if(stabilizzato==false){
+        stabilizzation() //Stabilizzazione
+    }
     if(climbOn==true){
 
         console.log(conv);
