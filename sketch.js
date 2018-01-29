@@ -70,7 +70,7 @@ var latitude,
     stabilizzato = false, //inizia con la propriteà non stabilizzata
     backUpstabilizzation = [], //crea la array dei valori per stabilizzare
     stabilizzationTOT = 0,
-    accuracyLimit = 0.4, //valore in metri che deve avere la sommatoria della array precedente per essere considerata accettabile
+    accuracyLimit = 0.2, //valore in metri che deve avere la sommatoria della array precedente per essere considerata accettabile
     maxStabilizzationArray = 4, //massimo numero di valori che l'array di sopra può tenere (maggiore è più preciso è)
 
     conv=0, //conversione da m in pixel di scalata
@@ -193,7 +193,7 @@ function draw() {
 
   for (var i=0; i < myData.landmarks_en.length; i++){
       if(hit_struct[i]==true){
-          
+          //check_scal=true;
           radarOn=false;
           console.log("cliccato "+i);
           push();
@@ -214,7 +214,7 @@ if(backMenu==true) { //se true fa comparire il menu per tornare indietro
   textFont(ubuntuRegular);
   text('latitude: ' + latitude, 5, 30);
   text('longitude: ' + longitude, 5, 30 * 2);
-  text('stabile: ' + stabilizzato + "/" + climbOn, 5, 30 * 3);
+  text('stabile: ' + stabilizzato + "/" + climbOn + "/" + check_scal, 5, 30 * 3);
   text('accuracy: ' + accuracy, 5, 30 * 4);
   text('Aggiornamenti: ' + numeroAgg, 5, 30 * 5);
   text('Distanza Precedente: ' + metriPrec, 5, 30 * 6);
@@ -424,7 +424,9 @@ function climbMode(structNum,cloudBool,cloudX,cloudY,cloudMin,cloudMax) { //stru
     climbStructure(structNum,cloudBool,cloudX,cloudY,cloudMin,cloudMax);
     climbInterface(structNum);
     backArrow();
-    
+    if(metriTOT>=heightLink[structNum]){
+        completed();
+    }
       if(infoOn==true) { //se true fa comparire la schermata con le informazioni sulla struttura
         setTimeout(infoScreen(structNum),400);
         if(infoButtonShow==true){infoButton()};
@@ -1252,12 +1254,11 @@ function showLocation(position) {
 
        }
        if(metriTOT>=myData.landmarks_en[scelto].height && check_scal==true){
+           
            metriTOT=myData.landmarks_en[scelto].height;
            conv=myData.landmarks_en[scelto].hPx;
            ( imgClone = imgLink[scelto].get() ).mask( mask.get() );
            check_scal=false;
-           completed();
-           
        }
     }
   }
