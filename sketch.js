@@ -1241,7 +1241,7 @@ function showLocation(position) {
     if(stabilizzato==false){
         stabilizzation() //Stabilizzazione
     }
-    if(climbOn==false){
+    if(climbOn==false && stabilizzato==true){
         metriPrec=0;    
     }
     if(climbOn==true){
