@@ -459,10 +459,10 @@ function climbInterface(structNum) {
       if(head_scal>heading_tot+5 || head_scal<heading_tot-5){
           textSize(12);
           if(ita==true){
-            text("Per una migliore esperienza è consigliato camminare in linea retta!",0,60);
+            text("Per una migliore esperienza è consigliato camminare in linea retta!",0,60,innerWidth,100);
           }
           if(eng==true){
-            text("For a better experince in suggested to walk straight!",0,60);
+            text("For a better experince in suggested to walk straight!",0,60,innerWidth,100);
           }
       }
   }
