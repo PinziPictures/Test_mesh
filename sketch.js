@@ -19,6 +19,7 @@ var demoTitlesOn=false;
 
 var check_scal=false; //la scalata è iniziata, si può iniziare il conteggio dei metri
 var scelto=-1;//id globale dell'edificio scelto
+var head_scal=null; //heading durante la scalata
 
 var myData, //segnaposto JSON
 
@@ -219,7 +220,8 @@ if(backMenu==true) { //se true fa comparire il menu per tornare indietro
   text('Aggiornamenti: ' + numeroAgg, 5, 30 * 5);
   text('Distanza Precedente: ' + metriPrec, 5, 30 * 6);
   text('conv: ' + conv, 5, 30 * 7);
-  text('heading: ' + heading, 5, 30 * 8);
+  text('heading_tot: ' + heading_tot, 5, 30 * 8);
+  text('heading_scal: ' + head_scal, 5, 30 * 9);
   pop();
   // console.log('infoOn: '+infoOn);
   // console.log('infoButtonShow: '+infoButtonShow);
@@ -452,7 +454,18 @@ function climbInterface(structNum) {
   textFont(ubuntuBoldItalic);
   textSize(40);
   fill(colorList[5]);
-  text(Math.round(metriTOT*10)/10+'/'+myData.landmarks_en[scelto].height+'m',0,0);
+  text(Math.round(metriTOT*10)/10+'m',0,0);
+  if(head_scal!=null){
+      if(head_scal>heading_tot+5 || head_scal<heading_tot-5){
+          textSize(12);
+          if(ita==true){
+            text("Per una migliore esperienza è consigliato camminare in linea retta!",0,60);
+          }
+          if(eng==true){
+            text("For a better experince in suggested to walk straight!",0,60);
+          }
+      }
+  }
   pop();
 }
 var cloudSwitch=false;
@@ -511,6 +524,7 @@ function completed() {
   push();
   var txtCompleted;
   check_scal=false;
+  head_scal=null;
   if(movSwitcher==false) {
     if(movY<80){movY+=2};
     if(movY>=80){movY=80; movSwitcher=true;};
@@ -1247,9 +1261,11 @@ function showLocation(position) {
     }
     if(climbOn==true){
 
-        console.log(conv);
+       
        if ((stabilizzato==true)&&(metriTOT<myData.landmarks_en[scelto].height)&&(metriPrec>accuracyLimit)&&check_scal==true) {
-
+          if(head_scal==null && heading!=null){
+             head_scal=heading;
+          }
           if (isNaN(metriPrec)==false) {backUpPositionDist.push(metriPrec);} //se gli aggiornamenti hanno raggiunto la quota di 15. inizia ad aggiungere le distanze percorse alla Array di tutte le distanze
           metriTOT = backUpPositionDist.sum(); //fai la sommatoria della Array di tutte le distanze percorse per sapere la distanza totale percorsa
 
