@@ -438,7 +438,7 @@ function climbMode(structNum,cloudBool,cloudX,cloudY,cloudMin,cloudMax) { //stru
   fill(colorList[0]);
   noStroke();
 
-  rect(width,height-f,-width*2,800);
+  //rect(width,height-f,-width*2,800);
   pop();
 
 
@@ -1218,7 +1218,7 @@ function drawIconOnRadar() {
       posRelMe[i].dist = measure(myData.landmarks_en[i].Lat, myData.landmarks_en[i].Lon, myLat, myLon);
 
       var headingAng = 0;
-      if (nordIsUp == false) {headingAng = heading_tot;}
+      if (nordIsUp == false) {headingAng = -heading_tot;}
 
       if ((posRelMe[i].Lon>0)&&(posRelMe[i].Lat>0)) {posRelMe[i].Ang = (atan(posRelMe[i].distY/posRelMe[i].distX))+headingAng;}
       if ((posRelMe[i].Lon>0)&&(posRelMe[i].Lat<0)) {posRelMe[i].Ang = 180-(atan(posRelMe[i].distY/posRelMe[i].distX))+headingAng;}
