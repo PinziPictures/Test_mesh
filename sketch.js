@@ -1181,8 +1181,8 @@ function drawIconOnRadar() {
     //praticamente il la hitbox sembra sempre spostata verso l'alto di un valore fisso, se lo zoom è al massimo sembra che sia sposta verso l'altro di poco, se invece lo zoom è al minimo la hitbox è completamente spostato verso l'alto sopra l'icona, sembra sempre dello stesso valore.
     //forse ha a che fare con il mouseX-width/2,mouseY-height/2...
 
-    rect(xIn-(wImg/2),yIn,wImg,hImg);
-    hit_struct[i]=collidePointRect(mouseX-width/2,mouseY-(height/2),xIn-(wImg/2),yIn,wImg,hImg)
+    rect(xIn,yIn,wImg,hImg);
+    hit_struct[i]=collidePointRect(mouseX-width/2,mouseY-(height/2),xIn-(wImg/2),yIn+posYPointer,wImg,hImg)
 
     //questo è il codice originale:
 
