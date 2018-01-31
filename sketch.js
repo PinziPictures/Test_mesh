@@ -1180,10 +1180,11 @@ function drawIconOnRadar() {
 
     //praticamente il la hitbox sembra sempre spostata verso l'alto di un valore fisso, se lo zoom è al massimo sembra che sia sposta verso l'altro di poco, se invece lo zoom è al minimo la hitbox è completamente spostato verso l'alto sopra l'icona, sembra sempre dello stesso valore.
     //forse ha a che fare con il mouseX-width/2,mouseY-height/2...
-
-    rect(xIn-(wImg/2),yIn+(hImg/2),wImg,hImg);
-    hit_struct[i]=collidePointRect(mouseX-width/2,mouseY-(height/2),xIn-(wImg/2),yIn+(hImg/2),wImg,hImg)
-
+    push();
+    //translate(-posXPointer,-posYPointer)
+    rect(xIn,yIn,wImg,hImg);
+    hit_struct[i]=collidePointRect(mouseX-width/2,mouseY-height/2,xIn-wImg/2,yIn+posYPointer/2,wImg,hImg)
+    pop();
     //questo è il codice originale:
 
     //rect( (posRelMe[i].Lon)*zoom,(posRelMe[i].Lat)*zoom*(-1)-35,40,80 );
@@ -1287,12 +1288,13 @@ function showLocation(position) {
     if(climbOn==false && stabilizzato==true){
         metriPrec=0;
         head_scal=null;
+        conta_head=0;
     }
     if(climbOn==true){
 
         console.log(conv);
        if ((stabilizzato==true)&&(metriTOT<myData.landmarks_en[scelto].height)&&(metriPrec>accuracyLimit)&&check_scal==true) {
-          if((head_scal==null && heading!=null) || (conta_head<6 && heading!=null)){
+          if((head_scal==null && heading!=null) || (conta_head<10 && heading!=null)){
              head_scal=heading;
              heading_tot=head_scal;
              conta_head++;
