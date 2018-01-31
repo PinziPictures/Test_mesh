@@ -1182,7 +1182,7 @@ function drawIconOnRadar() {
     //forse ha a che fare con il mouseX-width/2,mouseY-height/2...
 
     rect(xIn,yIn,wImg,hImg);
-    hit_struct[i]=collidePointRect(mouseX-width/2,mouseY-(height/2),xIn-(wImg/2),yIn+posYPointer,wImg,hImg)
+    hit_struct[i]=collidePointRect(mouseX-width/2,mouseY-(height/2),xIn-(wImg/2),yIn+(hImg/2),wImg,hImg)
 
     //questo è il codice originale:
 
@@ -1292,7 +1292,7 @@ function showLocation(position) {
 
         console.log(conv);
        if ((stabilizzato==true)&&(metriTOT<myData.landmarks_en[scelto].height)&&(metriPrec>accuracyLimit)&&check_scal==true) {
-          if((head_scal==null && heading!=null) || conta_head<3){
+          if((head_scal==null && heading!=null) || conta_head<6){
              head_scal=heading;
              heading_tot=head_scal;
              conta_head++;
