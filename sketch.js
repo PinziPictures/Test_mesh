@@ -1278,12 +1278,15 @@ function showLocation(position) {
         metriPrec = measure(backUpPositionLat[numeroAgg],backUpPositionLon[numeroAgg],backUpPositionLat[numeroAgg-1],backUpPositionLon[numeroAgg-1]) //calcola la distanza tra la posizione precedente è quella attuale
         metriPrec = Math.round(metriPrec*100)/100 //arrotonda la distanza precedente
     }
-
+    if(stabilizzato==true && radarOn==true){
+        calcPosRelMe();
+    }
     if(stabilizzato==false){
         stabilizzation() //Stabilizzazione
     }
     if(climbOn==false && stabilizzato==true){
         metriPrec=0;
+        head_scal=null;
     }
     if(climbOn==true){
 
