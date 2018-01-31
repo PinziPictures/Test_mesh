@@ -454,7 +454,7 @@ function climbInterface(structNum) {
   fill(colorList[5]);
   text(Math.round(metriTOT*10)/10+'/'+myData.landmarks_en[scelto].height+'m',0,0);
   if(head_scal!=null){ //controllo heading scalata
-      if(head_scal>heading_tot+8 || head_scal<heading_tot-8){
+      if(head_scal>heading_tot+(accuracy*2) || head_scal<heading_tot-(accuracy*2)){
           textSize(12);
           if(ita==true){
             text("Per una migliore esperienza è consigliato camminare in linea retta!",0,60,width/1.3,100);
@@ -1218,7 +1218,7 @@ function drawIconOnRadar() {
       posRelMe[i].dist = measure(myData.landmarks_en[i].Lat, myData.landmarks_en[i].Lon, myLat, myLon);
 
       var headingAng = 0;
-      if (nordIsUp == false) {headingAng = -heading_tot;}
+      if (nordIsUp == false) {headingAng = heading_tot+180;}
 
       if ((posRelMe[i].Lon>0)&&(posRelMe[i].Lat>0)) {posRelMe[i].Ang = (atan(posRelMe[i].distY/posRelMe[i].distX))+headingAng;}
       if ((posRelMe[i].Lon>0)&&(posRelMe[i].Lat<0)) {posRelMe[i].Ang = 180-(atan(posRelMe[i].distY/posRelMe[i].distX))+headingAng;}
