@@ -107,7 +107,7 @@ function preload() { //tutti i preload delle immagini e i font
 
 function setup() { //tutti i default dell'interfaccia
   imgClone  = createGraphics(720, 1280);
-  
+
 
   createCanvas(innerWidth,innerHeight);
   mask = createGraphics(width,height); //crea il segnaposto per la mascherma sotto (le grandezze qui si ripetono poi sotto)
@@ -221,7 +221,7 @@ if(backMenu==true) { //se true fa comparire il menu per tornare indietro
   text('Distanza Precedente: ' + metriPrec, 5, 30 * 6);
   text('conv: ' + conv, 5, 30 * 7);
   text('heading: ' + heading, 5, 30 * 8);
-  text('versione 13:10 2/02/18', 5, 30 * 9);
+  text('versione 21:05 2/02/18', 5, 30 * 9);
   pop();
   // console.log('infoOn: '+infoOn);
   // console.log('infoButtonShow: '+infoButtonShow);
@@ -500,7 +500,7 @@ function climbStructure(structNum,cloudBool,cloudX,cloudY,cloudMin,cloudMax) {
   mask.rect(0,height-Math.round(map(conv,0,(height-height/10),0,height)),width,Math.round(map(conv,0,(height-height/10),0,height)));//crea maschera da rettangolo
   //mask.rect(0,height-conv,width,conv);//crea maschera da rettangolo
   image(imgClone, (width-((height-height/10)/(1280/720)))/2,height/10,(height-height/10)/(1280/720),(height-height/10));
-  
+
   rectMode(CENTER);
   pop();
 
@@ -738,9 +738,9 @@ function radar() {
   titleScreenOn = false;
   demoTitlesOn==false;
   climbOn=false;
-  zoomButtons();
   radarQuadrant();
-  nButton();
+
+
   var locationTitle;
   var locationTxt;
   var signalTitle;
@@ -781,6 +781,8 @@ function radar() {
   else {headingMode=0;};
 
   drawIconOnRadar()
+  zoomButtons();
+  nButton();
   pointerIcon(headingMode); //rotation, parametro da collegare all'heading se decidiamo di far muovere il puntatore e non il radar
 
   function zoomButtons() {
@@ -847,6 +849,7 @@ function radar() {
     hit_nButton=collidePointCircle(mouseX-width/2,mouseY-height/2,-width/2.2,height/2.3,30);
     if(hit_nButton==true) {
         nordIsUp=!nordIsUp;
+        calcPosRelMe();
         if(mouseIsPressed==true) {mouseX=-100; mouseY=-100;}
     }
     console.log(nordIsUp);
@@ -873,22 +876,24 @@ function radar() {
     if (radarQuadrantSwitch==true) {r-=23}
     if (r<=0) {r=0};
 
-    zoomCircle = map (zoom,limSupZoom,limInfZoom,1,0.2)
+    zoomCircle = map (zoom,limSupZoom,limInfZoom,2.7,187.2);
+    circleMassimo = (70+width);
+
 
   noStroke();
   fill(45,45,45,45);
   fill(45,45,45,45);
-  ellipse(0,height/11,70+width/1+2-r); //drop-shadow
+  ellipse(0,height/11,circleMassimo+2-r); //drop-shadow
   fill(245,245,245);
-  ellipse(0,height/11,70+width/1-r);
+  ellipse(0,height/11,circleMassimo-r);
   fill(240,240,240);
-  ellipse(0,height/11,70+width/1-105-r);
+  ellipse(0,height/11,zoomCircle+(circleMassimo-zoomCircle)*(2/3)-r);
   fill(235,235,235);
-  ellipse(0,height/11,70+width/1-230-r);
+  ellipse(0,height/11,zoomCircle+(circleMassimo-zoomCircle)*(1/3)-r);
   fill(123,206,239,rOp);
-  ellipse(0,height/11,70+180-rSignal-r);
+  ellipse(0,height/11,zoomCircle-r);
   fill(235,235,235);
-  ellipse(0,height/11,70+270-380-r);
+  ellipse(0,height/11,70+270-367-r);
   }
 }
 
@@ -1289,7 +1294,7 @@ function showLocation(position) {
 
         console.log(conv);
        if ((stabilizzato==true)&&(metriTOT<myData.landmarks_en[scelto].height)&&(metriPrec>accuracyLimit)&&check_scal==true) {
-          if((head_scal==null && heading!=null) || (conta_head<10 && heading!=null)){
+          if((head_scal==null && heading!=null) || (conta_head<5 && heading!=null)){
              head_scal=heading;
              heading_tot=head_scal;
              conta_head++;
