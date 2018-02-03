@@ -32,7 +32,7 @@ var myData, //segnaposto JSON
     posXPointer, //posizione centro radar
     posYPointer, //posizione centro radar
 
-    zoom = 13564; //var zoom inizilae
+    zoom = 70000; //var zoom inizilae
     limSupZoom = 1364;
     limInfZoom = 91072;
     zoomIncrement = 1.04;
@@ -222,7 +222,7 @@ if(backMenu==true) { //se true fa comparire il menu per tornare indietro
   text('Distanza Precedente: ' + metriPrec, 5, 30 * 6);
   text('conv: ' + conv, 5, 30 * 7);
   text('heading: ' + heading, 5, 30 * 8);
-  text('versione 11:35 3/02/18', 5, 30 * 9);
+  text('versione 12:02 3/02/18', 5, 30 * 9);
   pop();
   // console.log('infoOn: '+infoOn);
   // console.log('infoButtonShow: '+infoButtonShow);
@@ -1155,7 +1155,14 @@ function drawIconOnRadar() {
       else if (posRelMe[i].dist<distCliccable) {
         fill(244,128,33,210);
         ellipse(xIn, yIn+(hImg/2), wElli, hElli);
-        image(imgLinkGray[i], xIn, yIn , wImg, hImg);
+        if (myData.landmarks_en[i].visit==false) {
+          fill(45,45,95,70);
+          image(imgLinkGray[i], xIn, yIn , wImg, hImg);
+        } //Se l'icona non è stat visitata
+        else {
+          fill(45,45,95,70);
+          image(imgLinkColore[i], xIn, yIn , wImg, hImg);
+        } //Se l'icona è stat visitata
       } //Se l'icona si trova nelle vicinanze
 
       else {  //Se l'icona è dentro il radar
