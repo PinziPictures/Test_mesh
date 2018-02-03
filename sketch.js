@@ -20,6 +20,7 @@ var demoTitlesOn=false;
 var check_scal=false; //la scalata è iniziata, si può iniziare il conteggio dei metri
 var scelto=-1;//id globale dell'edificio scelto
 var head_scal=null; //heading durante la scalata
+var head_prec=null; 
 var conta_head=0; // assestamento heading scalata
 
 var myData, //segnaposto JSON
@@ -222,7 +223,7 @@ if(backMenu==true) { //se true fa comparire il menu per tornare indietro
   text('Distanza Precedente: ' + metriPrec, 5, 30 * 6);
   text('conv: ' + conv, 5, 30 * 7);
   text('heading: ' + heading, 5, 30 * 8);
-  text('versione 13:20 3/02/18', 5, 30 * 9);
+  text('versione 16:39 3/02/18', 5, 30 * 9);
   pop();
   // console.log('infoOn: '+infoOn);
   // console.log('infoButtonShow: '+infoButtonShow);
@@ -658,38 +659,41 @@ function instructions() {
   push();
   imageMode(CENTER);
   background(colorList[0]);
-  image(camminaIco,-width/3,height/60);
-  image(drittoIco,-width/3,height/60+110);
+  image(camminaIco,-width/3.,height/240);
+  image(drittoIco,-width/3,height/240+108);
   pop();
 
   //text
   push();
-  textSize(17);
+  textSize(width/20);
   textAlign(LEFT);
   textFont(ubuntuMedium);
   fill(224,108,13);
   text(topText,0,-height/3,width-45,height/5);
   textFont(ubuntuBoldItalic);
-  textSize(21);
-  text(titleText,0,-height/16,width-45,height/5);
+  textSize(width/17);
+  text(titleText,0,-height/20,width-45,height/5);
 
   fill(110,110,110);
-  textSize(18);
+  textSize(width/20);
   textFont(ubuntuRegularItalic);
   text(questText,0,-height/4.8,width-45,height/5);
 
   fill(110,110,100);
-  textSize(12);
+  textSize(width/28);
   textFont(ubuntuMedium);
-  text(camminaText,width/12,height/18,width-160,height/5);
-  text(drittoText,width/12,height/18+110,width-160,height/5);
+  text(camminaText,width/12,height/18,width-150,height/5);
+  text(drittoText,width/12,height/18+110,width-150,height/5);
 
   push();
   textAlign(CENTER);
   fill(70,100,210);
   textSize(14);
+  if(height<=435) {
+    textSize(12);
+  }
   textFont(ubuntuBold);
-  text(stabileText,0,height/2.15,width-155,height/5);
+  text(stabileText,0,height/2.15,200,height/5);
   pop();
 
   pop();
@@ -1110,6 +1114,7 @@ function drawIconOnRadar() {
 
     imageMode(CENTER)
     translate(posXPointer,posYPointer)
+    // for (var i=0; i < myData.landmarks_en.length; i++) { //Disegna tutte le icone
     for (var i=0; i < myData.landmarks_en.length-2; i++) { //Disegna tutte le icone
 
       var wImg,
@@ -1296,6 +1301,7 @@ function showLocation(position) {
     if(climbOn==false && stabilizzato==true){
         metriPrec=0;
         head_scal=null;
+        head_prec=null;
         conta_head=0;
     }
     if(climbOn==true){
@@ -1303,9 +1309,17 @@ function showLocation(position) {
         // console.log(conv);
        if ((stabilizzato==true)&&(metriTOT<myData.landmarks_en[scelto].height)&&(metriPrec>accuracyLimit)&&check_scal==true) {
           if((head_scal==null && heading!=null) || (conta_head<5 && heading!=null)){
-             head_scal=heading;
-             heading_tot=head_scal;
-             conta_head++;
+             if(conta_head==0){
+                 head_scal=heading;
+                 heading_tot=head_scal
+             }else{
+                 head_prec=head_scal;
+                 head_scal=heading;
+                 heading_tot=head_scal
+                 if(head_prec!=head_scal){
+                     conta_head++;
+                 }
+             }
           }
           if (isNaN(metriPrec)==false) {backUpPositionDist.push(metriPrec);} //se gli aggiornamenti hanno raggiunto la quota di 15. inizia ad aggiungere le distanze percorse alla Array di tutte le distanze
           metriTOT = backUpPositionDist.sum(); //fai la sommatoria della Array di tutte le distanze percorse per sapere la distanza totale percorsa
@@ -1323,7 +1337,7 @@ function showLocation(position) {
        if(metriTOT>=myData.landmarks_en[scelto].height && check_scal==true && (metriPrec>accuracyLimit)){
            myData.landmarks_en[scelto].visit=true;//icona visitata
            myData.landmarks_it[scelto].visit=true;
-           
+
            conta_head=0;
            metriTOT=myData.landmarks_en[scelto].height;
            // console.log(height-height/10);
