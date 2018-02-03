@@ -20,7 +20,6 @@ var demoTitlesOn=false;
 var check_scal=false; //la scalata è iniziata, si può iniziare il conteggio dei metri
 var scelto=-1;//id globale dell'edificio scelto
 var head_scal=null; //heading durante la scalata
-var head_prec=null; 
 var conta_head=0; // assestamento heading scalata
 
 var myData, //segnaposto JSON
@@ -223,7 +222,7 @@ if(backMenu==true) { //se true fa comparire il menu per tornare indietro
   text('Distanza Precedente: ' + metriPrec, 5, 30 * 6);
   text('conv: ' + conv, 5, 30 * 7);
   text('heading: ' + heading, 5, 30 * 8);
-  text('versione 16:39 3/02/18', 5, 30 * 9);
+  text('versione 17:34 3/02/18', 5, 30 * 9);
   pop();
   // console.log('infoOn: '+infoOn);
   // console.log('infoButtonShow: '+infoButtonShow);
@@ -1301,25 +1300,16 @@ function showLocation(position) {
     if(climbOn==false && stabilizzato==true){
         metriPrec=0;
         head_scal=null;
-        head_prec=null;
         conta_head=0;
     }
     if(climbOn==true){
 
         // console.log(conv);
        if ((stabilizzato==true)&&(metriTOT<myData.landmarks_en[scelto].height)&&(metriPrec>accuracyLimit)&&check_scal==true) {
-          if((head_scal==null && heading!=null) || (conta_head<5 && heading!=null)){
-             if(conta_head==0){
-                 head_scal=heading;
-                 heading_tot=head_scal
-             }else{
-                 head_prec=head_scal;
-                 head_scal=heading;
-                 heading_tot=head_scal
-                 if(head_prec!=head_scal){
-                     conta_head++;
-                 }
-             }
+          if((head_scal==null && heading!=null) || (conta_head<7 && heading!=null)){
+             head_scal=heading;
+             heading_tot=head_scal;
+             conta_head++;
           }
           if (isNaN(metriPrec)==false) {backUpPositionDist.push(metriPrec);} //se gli aggiornamenti hanno raggiunto la quota di 15. inizia ad aggiungere le distanze percorse alla Array di tutte le distanze
           metriTOT = backUpPositionDist.sum(); //fai la sommatoria della Array di tutte le distanze percorse per sapere la distanza totale percorsa
