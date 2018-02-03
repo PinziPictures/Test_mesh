@@ -222,7 +222,7 @@ if(backMenu==true) { //se true fa comparire il menu per tornare indietro
   text('Distanza Precedente: ' + metriPrec, 5, 30 * 6);
   text('conv: ' + conv, 5, 30 * 7);
   text('heading: ' + heading, 5, 30 * 8);
-  text('versione 12:02 3/02/18', 5, 30 * 9);
+  text('versione 13:20 3/02/18', 5, 30 * 9);
   pop();
   // console.log('infoOn: '+infoOn);
   // console.log('infoButtonShow: '+infoButtonShow);
@@ -1110,7 +1110,7 @@ function drawIconOnRadar() {
 
     imageMode(CENTER)
     translate(posXPointer,posYPointer)
-    for (var i=0; i < myData.landmarks_en.length; i++) { //Disegna tutte le icone
+    for (var i=0; i < myData.landmarks_en.length-2; i++) { //Disegna tutte le icone
 
       var wImg,
           hImg,
