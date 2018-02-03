@@ -1306,7 +1306,7 @@ function showLocation(position) {
 
         // console.log(conv);
        if ((stabilizzato==true)&&(metriTOT<myData.landmarks_en[scelto].height)&&(metriPrec>accuracyLimit)&&check_scal==true) {
-          if((head_scal==null && heading!=null) || (conta_head<7 && heading!=null)){
+          if((head_scal==null && heading!=null) || (conta_head<6 && heading!=null)){
              head_scal=heading;
              heading_tot=head_scal;
              conta_head++;
